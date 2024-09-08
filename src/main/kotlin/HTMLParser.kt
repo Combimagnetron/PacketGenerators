@@ -40,11 +40,15 @@ class HTMLParser(val html: String) {
                     boundTo = packetInfo[2].text()
 
                     try {
-                        for (rowIndex in 2 until tableRows.size) {
+                        for (rowIndex in 1 until tableRows.size) {
                             val tds = tableRows[rowIndex].select("td")
                             if (tds.size >= 3) {
                                 var fieldName = tds[0].text().trim()
                                 var fieldType = tds[1].text().trim()
+                                if (rowIndex == 1) {
+                                    fieldName = tds[3].text().trim()
+                                    fieldType = tds[4].text().trim()
+                                }
 
                                 fieldName = fieldName.toLowerCase().replace(" ", "_")
                                 fieldType = fieldType.toSnakeCase()
