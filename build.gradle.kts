@@ -41,18 +41,20 @@ application {
 publishing {
     repositories {
         maven {
-            url = uri("https://mvn.devos.one/releases")
-            credentials {
-                username = System.getenv()["MAVEN_USER"]
-                password = System.getenv()["MAVEN_PASS"]
+            name = "combimagnetron"
+            url = uri("http://78.47.189.94/releases/")
+            credentials(PasswordCredentials::class)
+            authentication {
+                create<BasicAuthentication>("basic")
             }
+            isAllowInsecureProtocol = true
         }
     }
     publications {
-        register<MavenPublication>("maven") {
-            groupId = "io.github.dockyardmc"
-            artifactId = "wikivg-datagen"
-            version = version
+        create<MavenPublication>("maven") {
+            groupId = project.group.toString()
+            artifactId = "WikiVG-Generator"
+            version = project.version.toString()
             from(components["java"])
         }
     }

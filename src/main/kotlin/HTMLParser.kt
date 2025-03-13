@@ -8,14 +8,14 @@ import java.lang.Exception
 
 class HTMLParser(val html: String) {
 
-    fun parseToPackets(): List<Packet> {
+    fun parseToPackets(packets : List<String>): List<Packet> {
         log("Parsing HTML..", LogType.DEBUG)
         val result = mutableListOf<Packet>()
         val doc: Document = Jsoup.parse(html)
         val h4Elements = doc.select("h4")
 
         for (h4Element in h4Elements) {
-            val header = h4Element.text().trim()
+            val header = h4Element.text().trim().replace("[edit | edit source]", "")
 
             var packetId = ""
             var state = ""
@@ -35,30 +35,34 @@ class HTMLParser(val html: String) {
                     val dataRow = tableRows[1]
                     val packetInfo = dataRow.select("td")
 
-                    packetId = packetInfo[0].text()
+                    packetId = packetInfo[0].text().replace("edit_edit_source", "")
                     state = packetInfo[1].text()
                     boundTo = packetInfo[2].text()
 
-                    try {
-                        for (rowIndex in 1 until tableRows.size) {
-                            val tds = tableRows[rowIndex].select("td")
-                            if (tds.size >= 3) {
-                                var fieldName = tds[0].text().trim()
-                                var fieldType = tds[1].text().trim()
-                                if (rowIndex == 1) {
-                                    fieldName = tds[3].text().trim()
-                                    fieldType = tds[4].text().trim()
-                                }
-
-                                fieldName = fieldName.toLowerCase().replace(" ", "_")
-                                fieldType = fieldType.toSnakeCase()
-
-                                fields.add(PacketField(fieldName, fieldType))
-                            }
-                        }
-                    } catch (ex: Exception) {
-                        log("Error when getting fields for $header", LogType.FATAL)
+                    Regex("0x[0-9A-Fa-f]+").find(packetId)?.let {
+                        packetId = it.value
                     }
+
+                    try {
+                            for (rowIndex in 1 until tableRows.size) {
+                                val tds = tableRows[rowIndex].select("td")
+                                if (tds.size >= 3) {
+                                    var fieldName = tds[0].text().trim()
+                                    var fieldType = tds[1].text().trim()
+                                    if (rowIndex == 1) {
+                                        fieldName = tds[3].text().trim()
+                                        fieldType = tds[4].text().trim()
+                                    }
+
+                                    fieldName = fieldName.toLowerCase().replace(" ", "_")
+                                    fieldType = fieldType.toSnakeCase()
+
+                                    fields.add(PacketField(fieldName, fieldType))
+                                }
+                            }
+                        } catch (ex: Exception) {
+                            log("Error when getting fields for $header", LogType.FATAL)
+                        }
 
                 }
                 nextSibling = nextSibling.nextElementSibling()
@@ -68,7 +72,7 @@ class HTMLParser(val html: String) {
             boundTo = boundTo.lowercase()
             state = state.lowercase()
 
-            if(packetId.isEmpty() || !isValidHexInt(packetId)) {
+            if(packetId.isEmpty() || !isValidHexInt(packetId) || (!packets.contains(header) && packets.isNotEmpty())) {
                 log("Packet $packetName has empty packet id, skipping..", LogType.WARNING)
                 continue
             }
