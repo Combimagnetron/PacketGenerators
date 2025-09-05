@@ -13,7 +13,7 @@ class HTMLContentGetter {
     init {
         log("Getting HTML from wiki.vg/protocol...", LogType.NETWORK)
         val request = HttpRequest.newBuilder()
-            .uri(URI("https://minecraft.wiki/w/Java_Edition_protocol"))
+            .uri(URI("https://minecraft.wiki/w/Java_Edition_protocol/Packets"))
             .GET()
             .build()
 

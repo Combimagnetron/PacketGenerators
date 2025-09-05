@@ -6,7 +6,7 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.lang.Exception
 
-class HTMLParser(val html: String) {
+class HTMLParser(val html: String, val overrides: List<Override>) {
 
     fun parseToPackets(packets : List<String>): List<Packet> {
         log("Parsing HTML..", LogType.DEBUG)

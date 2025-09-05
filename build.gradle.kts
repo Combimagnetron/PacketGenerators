@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "io.github.dockyardmc"
-version = "1.3"
+version = "1.5.1"
 
 repositories {
     mavenCentral()
@@ -20,7 +20,6 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
-    implementation("cz.lukynka:pretty-log:1.4")
     implementation("org.jsoup:jsoup:1.17.2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
@@ -41,8 +40,8 @@ application {
 publishing {
     repositories {
         maven {
-            name = "combimagnetron"
-            url = uri("http://78.47.189.94/releases/")
+            name = "tikitechmc"
+            url = uri("https://repo.tikite.ch/releases/")
             credentials(PasswordCredentials::class)
             authentication {
                 create<BasicAuthentication>("basic")

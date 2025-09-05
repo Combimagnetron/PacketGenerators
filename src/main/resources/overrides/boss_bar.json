@@ -1,0 +1,58 @@
+{
+  "packet_name": "boss_bar",
+  "packet_state": "play",
+  "override": [
+  {
+    "field": "uuid",
+    "type": "uuid"
+  },
+  {
+    "field": "action",
+    "type": "var_int_enum"
+  },
+  {
+    "field": "0:_add",
+    "type": "title"
+  },
+  {
+    "field": "health",
+    "type": "float"
+  },
+  {
+    "field": "color",
+    "type": "var_int_enum"
+  },
+  {
+    "field": "division",
+    "type": "var_int_enum"
+  },
+  {
+    "field": "flags",
+    "type": "unsigned_byte"
+  },
+  {
+    "field": "1:_remove",
+    "type": "no_fields"
+  },
+  {
+    "field": "2:_update_health",
+    "type": "health"
+  },
+  {
+    "field": "3:_update_title",
+    "type": "title"
+  },
+  {
+    "field": "4:_update_style",
+    "type": "color"
+  },
+  {
+    "field": "dividers",
+    "type": "var_int_enum"
+  },
+  {
+    "field": "5:_update_flags",
+    "type": "flags"
+  }
+  ]
+}

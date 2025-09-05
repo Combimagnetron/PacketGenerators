@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 import java.io.File
 
 fun main(args: Array<String>) {
-    val dataGenerator = WikiVGDataGenerator(listOf())
+    val dataGenerator = WikiVGDataGenerator(listOf(), listOf())
     log("Writing data of packets in json format to ./out/packets.json")
 
     val dir = File("./out/")
